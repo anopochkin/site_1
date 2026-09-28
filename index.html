@@ -6,34 +6,36 @@
   <meta name="description" content="Portfolio technique : Cloud, AWS, Azure et réseaux">
   <title>Denis Anopochkin | Cloud & Infrastructure</title>
   
-  <!-- Подключение CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <header>
-    <h1>Bienvenue sur mon site</h1>
-  </header>
+  <!-- Вот этот div обязательно нужен, чтобы CSS заработал -->
+  <div class="container">
+    <header>
+      <h1>Bienvenue sur mon site</h1>
+    </header>
 
-  <main>
-    <section id="about">
-      <h2>À propos</h2>
-      <p>Passionné par l'infrastructure cloud et les réseaux. J'explore activement les écosystèmes <strong>AWS</strong> et <strong>Microsoft Azure</strong>.</p>
-      <p>Sur ce site, je documente mes laboratoires, mes tests d'architecture et mon apprentissage des services cloud.</p>
-    </section>
+    <main>
+      <section id="about">
+        <h2>À propos</h2>
+        <p>Passionné par l'infrastructure cloud et les réseaux. J'explore activement les écosystèmes <strong>AWS</strong> et <strong>Microsoft Azure</strong>.</p>
+        <p>Sur ce site, je documente mes laboratoires, mes tests d'architecture et mon apprentissage des services cloud.</p>
+      </section>
 
-    <section id="projects">
-      <h2>Mes projets Cloud & Réseaux</h2>
-      <ul>
-        <li><strong>Lab Azure:</strong> Mise en place de réseaux virtuels (VNet) et peering.</li>
-        <li><strong>AWS VPC:</strong> Configuration d'une infrastructure sécurisée (Public/Private Subnets).</li>
-        <li><strong>Network Automation:</strong> Scripts de déploiement et gestion de ressources.</li>
-      </ul>
-    </section>
-  </main>
+      <section id="projects">
+        <h2>Mes projets Cloud & Réseaux</h2>
+        <ul>
+          <li><strong>Lab Azure:</strong> Mise en place de réseaux virtuels (VNet) et peering.</li>
+          <li><strong>AWS VPC:</strong> Configuration d'une infrastructure sécurisée (Public/Private Subnets).</li>
+          <li><strong>Network Automation:</strong> Scripts de déploiement et gestion de ressources.</li>
+        </ul>
+      </section>
+    </main>
 
-  <footer>
-    <p>Contact : <a href="https://github.com/anopochkin">Mon GitHub</a></p>
-  </footer>
+    <footer>
+      <p>Contact : <a href="https://github.com/anopochkin" class="github-button">Mon GitHub</a></p>
+    </footer>
+  </div>
 </body>
 </html>
