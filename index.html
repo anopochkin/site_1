@@ -1,41 +1,64 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <!-- Мета-теги для адаптивности и SEO -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portfolio technique : Cloud, AWS, Azure et réseaux">
-  
-  <title>Denis Anopochkin | Cloud & Infrastructure</title>
-  
-  <!-- Подключение CSS -->
-<link rel="stylesheet" href="style.css">
-</head>
+/* Используем системный шрифт — это самый современный тренд */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    color: #334155;
+    background-color: #f1f5f9;
+    margin: 0;
+    padding: 0;
+}
 
-<body>
-  <header>
-    <h1>Bienvenue sur mon site</h1>
-  </header>
+/* Контейнер для центровки контента */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
 
-  <main>
-    <section id="about">
-      <h2>À propos</h2>
-      <p>Passionné par l'infrastructure cloud et les réseaux. J'explore activement les écosystèmes <strong>AWS</strong> et <strong>Microsoft Azure</strong>.</p>
-      <p>Sur ce site, je documente mes laboratoires, mes tests d'architecture et mon apprentissage des services cloud.</p>
-    </section>
+/* Заголовки с акцентом */
+h1 {
+    font-size: 2.5rem;
+    color: #0f172a;
+    margin-bottom: 0.5rem;
+}
 
-    <section id="projects">
-      <h2>Mes projets Cloud & Réseaux</h2>
-      <ul>
-        <li><strong>Lab Azure:</strong> Mise en place de réseaux virtuels (VNet) et peering.</li>
-        <li><strong>AWS VPC:</strong> Configuration d'une infrastructure sécurisée (Public/Private Subnets).</li>
-        <li><strong>Network Automation:</strong> Scripts de déploiement et gestion de ressources.</li>
-      </ul>
-    </section>
-  </main>
+h2 {
+    color: #0284c7; /* Синий цвет в стиле облаков */
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 10px;
+    margin-top: 40px;
+}
 
-  <footer>
-    <p>Contact :  <a href="https://github.com/anopochkin">Mon GitHub</a></p>
-  </footer>
-</body>
-</html>
+/* Карточки для проектов */
+section {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px; /* Закругленные углы — это модно */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+}
+
+/* Списки */
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Ссылка на GitHub как кнопка */
+a.github-button {
+    display: inline-block;
+    background-color: #0f172a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+a.github-button:hover {
+    background-color: #334155;
+}
