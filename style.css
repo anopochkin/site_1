@@ -48,4 +48,24 @@ footer { text-align: center; margin-top: 30px; }
     text-decoration: none;
     border-radius: 6px;
     font-weight: 600;
+.footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Расстояние между иконками */
+}
+
+.social-links a {
+    color: #475569; /* Цвет иконок */
+    transition: 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #0284c7; /* Цвет при наведении */
+    transform: translateY(-3px); /* Легкий прыжок вверх */
 }
