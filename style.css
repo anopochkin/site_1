@@ -1,6 +1,7 @@
+/* Светлая тема */
 body {
-    background-color: #0f172a;
-    color: #e2e8f0;
+    background-color: #f8fafc; /* Очень светлый, почти белый фон */
+    color: #1e293b;            /* Темно-серый текст, чтобы глаза не уставали */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     margin: 0;
@@ -22,19 +23,21 @@ header {
 }
 
 h1, h2 {
-    color: #38bdf8;
+    color: #0284c7; /* Насыщенный синий цвет (как у логотипа Azure) */
 }
 
+/* Белые карточки */
 section {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 10px;
+    background: #ffffff; /* Белый фон карточек */
+    padding: 25px;
+    border-radius: 8px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border: 1px solid #e2e8f0; /* Легкая серая рамка */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Мягкая тень */
 }
 
 a {
-    color: #38bdf8;
+    color: #0284c7;
     text-decoration: none;
     font-weight: bold;
 }
@@ -46,6 +49,6 @@ a:hover {
 footer {
     margin-top: 40px;
     font-size: 0.9rem;
-    color: #94a3b8;
+    color: #64748b;
     text-align: center;
 }
