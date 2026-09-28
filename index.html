@@ -1,77 +1,130 @@
+Понял тебя. Ты хочешь, чтобы было «красиво» (современно, стильно, как на
+Dribbble или у топовых разработчиков), а не как «учебник по HTML из 2005 года».
+
+Чтобы сделать «дорого», нам нужно:
+
+1.  Больше «воздуха» (отступы).
+2.  Современные шрифты (не стандартный Arial).
+3.  Акцентные цвета и тени.
+
+Давай сделаем «Card-based Minimalist» дизайн. Это сейчас самый популярный стиль
+в IT.
+
+1. index.html (Минимум кода)
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Denis Anopochkin, ingénieur Cloud & Infrastructure. Labs AWS et Azure.">
-  <title>Denis Anopochkin | Cloud & Infrastructure</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <title>Denis Anopochkin</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Подключаем красивый шрифт с Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-  <div class="wrap">
+
+  <div class="main-wrapper">
     <header>
-      <h1>Denis<br>Anopochkin</h1>
-      <p class="role">Ingénieur Cloud & Infrastructure. Je construis et sécurise des réseaux sur AWS et Azure.</p>
-
-      <div class="topo" role="img" aria-label="Schéma de deux réseaux virtuels reliés par peering">
-        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
-          <rect class="node" x="10" y="20" width="260" height="180" rx="16"/>
-          <text class="node-title" x="34" y="56">VNet A</text>
-          <text class="node-sub" x="34" y="78">10.0.0.0/16</text>
-          <rect class="vm" x="34" y="110" width="52" height="52" rx="10"/>
-          <rect class="vm" x="104" y="110" width="52" height="52" rx="10"/>
-          <rect class="vm" x="174" y="110" width="52" height="52" rx="10"/>
-
-          <rect class="node" x="490" y="20" width="260" height="180" rx="16"/>
-          <text class="node-title" x="514" y="56">VNet B</text>
-          <text class="node-sub" x="514" y="78">10.1.0.0/16</text>
-          <rect class="vm" x="514" y="110" width="52" height="52" rx="10"/>
-          <rect class="vm" x="584" y="110" width="52" height="52" rx="10"/>
-          <rect class="vm" x="654" y="110" width="52" height="52" rx="10"/>
-
-          <line class="link" x1="272" y1="110" x2="488" y2="110"/>
-          <text class="node-sub" x="380" y="96" text-anchor="middle">peering</text>
-        </svg>
-      </div>
+      <h1>Denis Anopochkin</h1>
+      <p class="subtitle">Cloud & Infrastructure Engineer</p>
     </header>
 
-    <main>
-      <section id="apropos">
-        <h2>À propos</h2>
-        <p>Passionné par l'infrastructure cloud et les réseaux, j'explore activement <strong>AWS</strong> et <strong>Microsoft Azure</strong>, en montant des labs pour comprendre comment les pièces s'assemblent.</p>
-        <div class="stack" aria-label="Technologies">
-          <span>AWS</span><span>Microsoft Azure</span><span>Réseaux</span><span>VPC / VNet</span>
-        </div>
-      </section>
+    <div class="card">
+      <h2>À propos</h2>
+      <p>Passionné par l'infrastructure cloud et les réseaux. J'explore activement <strong>AWS</strong> et <strong>Microsoft Azure</strong>.</p>
+    </div>
 
-      <section id="projets">
-        <h2>Mes projets</h2>
-        <ul class="projects">
-          <li>
-            <span class="tag">Azure</span>
-            <div>
-              <h3>Lab Azure : VNet et Peering</h3>
-              <p>Deux réseaux virtuels connectés par peering pour faire communiquer des machines de façon privée.</p>
-            </div>
-          </li>
-          <li>
-            <span class="tag">AWS</span>
-            <div>
-              <h3>AWS VPC : infrastructure sécurisée</h3>
-              <p>Un VPC segmenté avec des règles d'accès pensées pour limiter la surface d'exposition.</p>
-            </div>
-          </li>
-        </ul>
-      </section>
-    </main>
+    <div class="card">
+      <h2>Mes projets</h2>
+      <ul class="project-list">
+        <li>Lab Azure: VNet & Peering</li>
+        <li>AWS VPC: Infrastructure sécurisée</li>
+      </ul>
+    </div>
 
     <footer>
-      <p>Me contacter : <a href="https://github.com/anopochkin">github.com/anopochkin</a></p>
+      <a href="https://github.com/anopochkin" class="btn">Mon GitHub</a>
     </footer>
   </div>
+
 </body>
 </html>
+
+2. style.css (Стиль «Premium IT»)
+
+Этот CSS делает всё «красивым» за счет теней, закруглений и шрифтов.
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.main-wrapper {
+    width: 100%;
+    max-width: 600px;
+}
+
+header { text-align: center; margin-bottom: 40px; }
+
+h1 { font-size: 2.5rem; margin: 0; color: #1a1a1a; }
+.subtitle { color: #666; font-size: 1.2rem; margin-top: 5px; }
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+h2 { font-size: 1.2rem; color: #0070f3; margin-top: 0; }
+
+.project-list { list-style: none; padding: 0; }
+.project-list li { 
+    background: #f8f9fa; 
+    padding: 12px; 
+    border-radius: 10px; 
+    margin-bottom: 10px; 
+}
+
+.btn {
+    display: block;
+    text-align: center;
+    background: #0070f3;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.btn:hover { background: #0051ad; transform: translateY(-2px); }
+
+Почему это сработает:
+
+1.  Шрифт Inter: Это шрифт, на котором написаны все современные интерфейсы (его
+    используют Notion, Figma, GitHub). С ним всё сразу выглядит «дороже».
+2.  Карточки с border-radius: 20px: Скругленные углы и мягкая тень (box-shadow)
+    делают сайт «объемным» и современным.
+3.  Отступы: Много свободного места вокруг блоков — это признак хорошего
+    дизайна.
+
+Что делать:
+
+1.  Замени код в обоих файлах.
+2.  Сделай git push.
+3.  Забудь про Ctrl+F5 и просто открой сайт через минуту.
+
+Если это не выглядит «красиво», значит, мы с тобой по-разному понимаем «красоту»
+(например, тебе может нравится неоновый киберпанк или что-то очень темное). Если
+хочешь другой стиль (например, темную тему, или наоборот — что-то очень яркое) —
+скажи, я подберу палитру!
