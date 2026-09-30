@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IaC: Bicep, CloudFormation и Google Infrastructure Manager</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .back { display: inline-block; margin-bottom: 20px; color: #0284c7; text-decoration: none; }
+    .note { color: #64748b; font-size: 0.95rem; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+    th, td { border: 1px solid #e2e8f0; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f8fafc; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 16px; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; line-height: 1.5; }
+    h3 { font-size: 1.05rem; color: #000; margin: 24px 0 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href="../index.html">← Главная</a>
+
+    <header>
+      <h1>IaC: Bicep, CloudFormation и Google Infrastructure Manager</h1>
+      <p class="subtitle">Проверено: сентябрь 2026</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>Что такое IaC</h2>
+        <p><strong>Инфраструктура как код (IaC)</strong> означает, что серверы, сети и другие ресурсы облака описывают в текстовых файлах, а не создают вручную в консоли. Такое описание хранят в git, повторяют и быстро удаляют и создают заново. У каждого из трёх крупных облаков свой подход, и здесь я их сравниваю.</p>
+      </section>
+
+      <section class="card">
+        <h2>Сравнение</h2>
+        <div class="table-wrap">
+          <table>
+            <tr><th></th><th>Bicep</th><th>CloudFormation</th><th>Google Infra Manager</th></tr>
+            <tr><td>Облако</td><td>Azure</td><td>AWS</td><td>Google Cloud</td></tr>
+            <tr><td>Язык</td><td>собственный DSL</td><td>YAML или JSON</td><td>Terraform (HCL)</td></tr>
+            <tr><td>Как работает</td><td>компилируется в ARM-шаблоны Azure</td><td>шаблоны выполняет сам AWS</td><td>управляемый запуск Terraform</td></tr>
+            <tr><td>Стоимость</td><td>бесплатный</td><td>сервис бесплатный, платишь за ресурсы</td><td>плата по тарифам Google</td></tr>
+            <tr><td>Порог входа</td><td>средний, читается легко</td><td>средний, шаблоны длинные</td><td>средний, нужно знать Terraform</td></tr>
+            <tr><td>Переносимость</td><td>только Azure</td><td>только AWS</td><td>конфигурация переносима, сервис нет</td></tr>
+          </table>
+        </div>
+        <p class="note">Прежний инструмент Google, Deployment Manager, перестал поддерживаться 31 марта 2026 года. Google предлагает переходить на Infrastructure Manager.</p>
+      </section>
+
+      <section class="card">
+        <h2>Пример: сеть, подсеть и одна ВМ</h2>
+        <p>Задача одинакова везде: виртуальная сеть, одна подсеть и одна маленькая ВМ в ней. Публичного доступа из интернета нет.</p>
+
+        <h3>Bicep (Azure)</h3>
+<pre><code>param location string = resourceGroup().location
+param adminUsername string = 'azureuser'
+@secure()
+param sshPublicKey string
+
+resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' = {
+  name: 'demo-vnet'
+  location: location
+  properties: {
+    addressSpace: { addressPrefixes: ['10.0.0.0/16'] }
+    subnets: [
+      {
+        name: 'demo-subnet'
+        properties: { addressPrefix: '10.0.1.0/24' }
+      }
+    ]
+  }
+}
+
+resource nic 'Microsoft.Network/networkInterfaces@2023-09-01' = {
+  name: 'demo-nic'
+  location: location
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipconfig1'
+        properties: {
+          subnet: { id: vnet.properties.subnets[0].id }
+          privateIPAllocationMethod: 'Dynamic'
+        }
+      }
+    ]
+  }
+}
+
+resource vm 'Microsoft.Compute/virtualMachines@2023-09-01' = {
+  name: 'demo-vm'
+  location: location
+  properties: {
+    hardwareProfile: { vmSize: 'Standard_B1s' }
+    osProfile: {
+      computerName: 'demo-vm'
+      adminUsername: adminUsername
+      linuxConfiguration: {
+        disablePasswordAuthentication: true
+        ssh: {
+          publicKeys: [
+            {
+              path: '/home/${adminUsername}/.ssh/authorized_keys'
+              keyData: sshPublicKey
+            }
+          ]
+        }
+      }
+    }
+    storageProfile: {
+      imageReference: {
+        publisher: 'Canonical'
+        offer: '0001-com-ubuntu-server-jammy'
+        sku: '22_04-lts-gen2'
+        version: 'latest'
+      }
+      osDisk: { createOption: 'FromImage' }
+    }
+    networkProfile: {
+      networkInterfaces: [ { id: nic.id } ]
+    }
+  }
+}</code></pre>
+        <p>Запуск: <code>az deployment group create --resource-group &lt;группа&gt; --template-file main.bicep</code></p>
+
+        <h3>CloudFormation (AWS)</h3>
+<pre><code>AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  ImageId:
+    Type: AWS::SSM::Parameter::Value&lt;AWS::EC2::Image::Id&gt;
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+  Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.1.0/24
+  Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: !Ref ImageId
+      SubnetId: !Ref Subnet</code></pre>
+        <p>Запуск: <code>aws cloudformation deploy --template-file template.yaml --stack-name demo</code></p>
+
+        <h3>Google Infrastructure Manager (Terraform)</h3>
+<pre><code>variable "project_id" {
+  type = string
+}
+
+provider "google" {
+  project = var.project_id
+  region  = "us-central1"
+}
+
+resource "google_compute_network" "vpc" {
+  name                    = "demo-vpc"
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "subnet" {
+  name          = "demo-subnet"
+  ip_cidr_range = "10.0.1.0/24"
+  region        = "us-central1"
+  network       = google_compute_network.vpc.id
+}
+
+resource "google_compute_instance" "vm" {
+  name         = "demo-vm"
+  machine_type = "e2-micro"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+    }
+  }
+
+  network_interface {
+    subnetwork = google_compute_subnetwork.subnet.id
+  }
+}</code></pre>
+        <p>Запуск идёт через <code>gcloud infra-manager deployments apply</code> с указанием проекта, региона и сервисного аккаунта. Точные параметры смотри в документации Google.</p>
+
+        <p class="note">Ресурсы могут стоить денег. После теста удали их: <code>az group delete</code>, <code>aws cloudformation delete-stack</code> или удаление deployment в Google.</p>
+      </section>
+
+      <section class="card">
+        <h2>Что видно из примера</h2>
+        <p>Самый короткий шаблон у CloudFormation: AWS многое подставляет по умолчанию. Bicep получился самым длинным, потому что в Azure сетевую карту и параметры входа нужно описывать явно. Google отказался от собственного языка и взял Terraform, поэтому код читается легко, если ты его уже знаешь.</p>
+      </section>
+
+      <section class="card">
+        <h2>Что выбрать</h2>
+        <ul>
+          <li><strong>Работаешь в Azure:</strong> Bicep. Он читается проще, чем сырые ARM-шаблоны.</li>
+          <li><strong>Работаешь в AWS:</strong> CloudFormation, если нужен родной инструмент без дополнительных программ.</li>
+          <li><strong>Работаешь в Google Cloud:</strong> Infrastructure Manager, если готов учить Terraform. Этот навык пригодится и в других облаках.</li>
+        </ul>
+        <p>В следующей статье разберу Ansible: он про настройку и автоматизацию, а не только про создание ресурсов.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
