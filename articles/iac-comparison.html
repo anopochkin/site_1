@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IaC: Bicep, CloudFormation и Google Infrastructure Manager</title>
+  <title>IaC : Bicep, CloudFormation et Google Infrastructure Manager</title>
   <link rel="stylesheet" href="../style.css">
   <style>
     .back { display: inline-block; margin-bottom: 20px; color: #0284c7; text-decoration: none; }
@@ -18,38 +18,39 @@
 </head>
 <body>
   <div class="container">
-    <a class="back" href="../index.html">← Главная</a>
+    <a class="back" href="../index.html">← Accueil</a>
 
     <header>
-      <h1>IaC: Bicep, CloudFormation и Google Infrastructure Manager</h1>
-      <p class="subtitle">Проверено: сентябрь 2026</p>
+      <h1>IaC : Bicep, CloudFormation et Google Infrastructure Manager</h1>
+      <p class="subtitle">Vérifié : septembre 2026</p>
     </header>
 
     <main>
       <section class="card">
-        <h2>Что такое IaC</h2>
-        <p><strong>Инфраструктура как код (IaC)</strong> означает, что серверы, сети и другие ресурсы облака описывают в текстовых файлах, а не создают вручную в консоли. Такое описание хранят в git, повторяют и быстро удаляют и создают заново. У каждого из трёх крупных облаков свой подход, и здесь я их сравниваю.</p>
+        <h2>C'est quoi l'IaC ?</h2>
+        <p>L'<strong>infrastructure as code (IaC)</strong>, c'est décrire ses serveurs et ses réseaux dans des fichiers texte, au lieu de les créer à la main dans la console du cloud. On peut garder ces fichiers dans git, les réutiliser, et tout supprimer ou recréer en quelques minutes.</p>
+        <p>Chaque grand cloud a son propre outil. Voici une comparaison simple des trois.</p>
       </section>
 
       <section class="card">
-        <h2>Сравнение</h2>
+        <h2>Comparaison</h2>
         <div class="table-wrap">
           <table>
             <tr><th></th><th>Bicep</th><th>CloudFormation</th><th>Google Infra Manager</th></tr>
-            <tr><td>Облако</td><td>Azure</td><td>AWS</td><td>Google Cloud</td></tr>
-            <tr><td>Язык</td><td>собственный DSL</td><td>YAML или JSON</td><td>Terraform (HCL)</td></tr>
-            <tr><td>Как работает</td><td>компилируется в ARM-шаблоны Azure</td><td>шаблоны выполняет сам AWS</td><td>управляемый запуск Terraform</td></tr>
-            <tr><td>Стоимость</td><td>бесплатный</td><td>сервис бесплатный, платишь за ресурсы</td><td>плата по тарифам Google</td></tr>
-            <tr><td>Порог входа</td><td>средний, читается легко</td><td>средний, шаблоны длинные</td><td>средний, нужно знать Terraform</td></tr>
-            <tr><td>Переносимость</td><td>только Azure</td><td>только AWS</td><td>конфигурация переносима, сервис нет</td></tr>
+            <tr><td>Cloud</td><td>Azure</td><td>AWS</td><td>Google Cloud</td></tr>
+            <tr><td>Langage</td><td>langage propre à Azure</td><td>YAML ou JSON</td><td>Terraform (HCL)</td></tr>
+            <tr><td>Comment ça marche</td><td>converti en modèles ARM d'Azure</td><td>AWS exécute le modèle lui-même</td><td>exécute Terraform pour vous</td></tr>
+            <tr><td>Prix</td><td>gratuit</td><td>service gratuit, on paie les ressources</td><td>selon les tarifs de Google</td></tr>
+            <tr><td>Difficulté</td><td>moyenne, facile à lire</td><td>moyenne, fichiers longs</td><td>moyenne, il faut connaître Terraform</td></tr>
+            <tr><td>Portabilité</td><td>Azure seulement</td><td>AWS seulement</td><td>le code Terraform est réutilisable, pas le service</td></tr>
           </table>
         </div>
-        <p class="note">Прежний инструмент Google, Deployment Manager, перестал поддерживаться 31 марта 2026 года. Google предлагает переходить на Infrastructure Manager.</p>
+        <p class="note">L'ancien outil de Google, Deployment Manager, n'est plus supporté depuis le 31 mars 2026. Google recommande maintenant Infrastructure Manager.</p>
       </section>
 
       <section class="card">
-        <h2>Пример: сеть, подсеть и одна ВМ</h2>
-        <p>Задача одинакова везде: виртуальная сеть, одна подсеть и одна маленькая ВМ в ней. Публичного доступа из интернета нет.</p>
+        <h2>Exemple : un réseau, un sous-réseau et une VM</h2>
+        <p>Le but est le même partout : créer un réseau virtuel, un sous-réseau et une petite machine virtuelle dedans. Pas d'accès depuis Internet, pour rester simple.</p>
 
         <h3>Bicep (Azure)</h3>
 <pre><code>param location string = resourceGroup().location
@@ -121,7 +122,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2023-09-01' = {
     }
   }
 }</code></pre>
-        <p>Запуск: <code>az deployment group create --resource-group &lt;группа&gt; --template-file main.bicep</code></p>
+        <p>Commande : <code>az deployment group create --resource-group &lt;groupe&gt; --template-file main.bicep</code></p>
 
         <h3>CloudFormation (AWS)</h3>
 <pre><code>AWSTemplateFormatVersion: '2010-09-09'
@@ -145,7 +146,7 @@ Resources:
       InstanceType: t3.micro
       ImageId: !Ref ImageId
       SubnetId: !Ref Subnet</code></pre>
-        <p>Запуск: <code>aws cloudformation deploy --template-file template.yaml --stack-name demo</code></p>
+        <p>Commande : <code>aws cloudformation deploy --template-file template.yaml --stack-name demo</code></p>
 
         <h3>Google Infrastructure Manager (Terraform)</h3>
 <pre><code>variable "project_id" {
@@ -184,24 +185,17 @@ resource "google_compute_instance" "vm" {
     subnetwork = google_compute_subnetwork.subnet.id
   }
 }</code></pre>
-        <p>Запуск идёт через <code>gcloud infra-manager deployments apply</code> с указанием проекта, региона и сервисного аккаунта. Точные параметры смотри в документации Google.</p>
+        <p>On lance le déploiement avec <code>gcloud infra-manager deployments apply</code>, en indiquant le projet, la région et un compte de service. Les détails exacts sont dans la documentation de Google.</p>
 
-        <p class="note">Ресурсы могут стоить денег. После теста удали их: <code>az group delete</code>, <code>aws cloudformation delete-stack</code> или удаление deployment в Google.</p>
+        <p class="note">Ces ressources peuvent coûter de l'argent. Après le test, supprimez-les : <code>az group delete</code>, <code>aws cloudformation delete-stack</code>, ou supprimez le déploiement dans Google.</p>
       </section>
 
       <section class="card">
-        <h2>Что видно из примера</h2>
-        <p>Самый короткий шаблон у CloudFormation: AWS многое подставляет по умолчанию. Bicep получился самым длинным, потому что в Azure сетевую карту и параметры входа нужно описывать явно. Google отказался от собственного языка и взял Terraform, поэтому код читается легко, если ты его уже знаешь.</p>
+        <h2>Ce qu'on remarque</h2>
+        <p>CloudFormation est le plus court, car AWS remplit beaucoup de choses par défaut. Bicep est le plus long : sur Azure, il faut décrire soi-même la carte réseau et la connexion. Google n'a pas créé son propre langage, il utilise Terraform. C'est facile à lire si vous le connaissez déjà.</p>
       </section>
 
-      <section class="card">
-        <h2>Что выбрать</h2>
-        <ul>
-          <li><strong>Работаешь в Azure:</strong> Bicep. Он читается проще, чем сырые ARM-шаблоны.</li>
-          <li><strong>Работаешь в AWS:</strong> CloudFormation, если нужен родной инструмент без дополнительных программ.</li>
-          <li><strong>Работаешь в Google Cloud:</strong> Infrastructure Manager, если готов учить Terraform. Этот навык пригодится и в других облаках.</li>
-        </ul>
-      </section>
+      
     </main>
   </div>
 </body>
