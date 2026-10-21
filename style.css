@@ -55,3 +55,9 @@ h2 {
 
 ul { padding-left: 20px; }
 li { margin-bottom: 10px; }
+
+.back{display:inline-block;margin-bottom:12px;color:#64748b;font-size:.9rem;text-decoration:none}
+.back:hover{color:#0284c7}
+.card p{line-height:1.7}
+.note{color:#64748b;font-size:.9rem}
+.ipa{color:#64748b}
